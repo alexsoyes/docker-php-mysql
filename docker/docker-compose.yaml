@@ -1,0 +1,30 @@
+version: "3.4"
+
+volumes:
+    mysql:
+    php:
+
+services:
+    
+    mysql:
+        image: mysql:5.7.19
+        command: --skip-name-resolve --max_allowed_packet=1073741824 --sql_mode=""
+        volumes:
+            - ./db/data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        ports:
+            - "3306:3306"
+
+    php:
+        build:
+            context: ./php7.4/
+            dockerfile: ./Dockerfile
+        tty: true
+        ports:
+            - "8080:80"
+        volumes:
+            - ../www:/app
+            - ./vhosts/www.conf:/etc/apache2/sites-available/000-default.conf:ro
+        depends_on:
+            - mysql
