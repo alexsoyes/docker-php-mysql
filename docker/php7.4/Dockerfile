@@ -35,8 +35,7 @@ RUN apt-get update && apt-get install -y \
     libreoffice
 RUN apt-get update && apt-get install -y \
     apache2 \
-    libapache2-mod-php \
-    supervisor
+    libapache2-mod-php
 RUN a2enmod rewrite
 
 # Composer
@@ -59,6 +58,9 @@ RUN apt update && apt install -y yarn
 RUN sed -e 's/max_execution_time = 30/max_execution_time = 300/' -i /etc/php/7.4/apache2/php.ini
 RUN sed -e 's/upload_max_filesize = 2M/upload_max_filesize = 300M/' -i /etc/php/7.4/apache2/php.ini
 RUN sed -e 's/post_max_size = 8M/post_max_size = 300M/' -i /etc/php/7.4/apache2/php.ini
+RUN echo "display_errors = on\n" >> /etc/php/7.4/apache2/php.ini
+RUN echo "display_startup_errors = on\n" >> /etc/php/7.4/apache2/php.ini
+RUN echo "error_log = /app/logs/php.log\n" >> /etc/php/7.4/apache2/php.ini
 
 RUN echo 'extension = imagick.so' /etc/php/7.4/apache2/php.ini
 # AJOUT COLOR et ALIAS
