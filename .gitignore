@@ -1,1 +1,4 @@
 docker/db
+www/
+vendor/
+.idea
