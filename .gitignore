@@ -1,4 +1,7 @@
 docker/db
-www/
+www/*
+www/index.php
+!www/adminer
 vendor/
-.idea
+logs/
+.idea/
