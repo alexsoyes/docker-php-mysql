@@ -1,0 +1,185 @@
+alex@alex-W65-67SJ:~/Projets/docker-php-mysql/docker$ docker-compose up --build
+Pulling mysql (mysql:5.7.19)...
+5.7.19: Pulling from library/mysql
+85b1f47fba49: Pull complete
+27dc53f13a11: Pull complete
+095c8ae4182d: Pull complete
+0972f6b9a7de: Pull complete
+1b199048e1da: Pull complete
+159de3cf101e: Pull complete
+963d934c2fcd: Pull complete
+f4b66a97a0d0: Pull complete
+f34057997f40: Pull complete
+ca1db9a06aa4: Pull complete
+0f913cb2cc0c: Pull complete
+Digest: sha256:bfb22e93ee87c6aab6c1c9a4e7cdc68e9cb9b64920f28fa289f9ffae9fe8e173
+Status: Downloaded newer image for mysql:5.7.19
+Building php
+Sending build context to Docker daemon  5.632kB
+Step 1/33 : FROM debian:bullseye
+ ---> 82bd5ee7b1c5
+Step 2/33 : WORKDIR /app
+ ---> Using cache
+ ---> 00a2bff7db05
+Step 3/33 : RUN rm /etc/localtime
+ ---> Using cache
+ ---> 111279af905a
+Step 4/33 : RUN ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+ ---> Using cache
+ ---> 58b322cd8d93
+Step 5/33 : RUN "date"
+ ---> Using cache
+ ---> b177b3408507
+Step 6/33 : RUN apt-get update && apt-get install -y     php7.4-imagick     dialog     apt-utils     lsb-release     apt-transport-https     ca-certificates     wget     vim     mariadb-client     git     acl     openssl
+ ---> Using cache
+ ---> 20beb060bc24
+Step 7/33 : RUN apt-get update && apt-get install -y     php7.4     php7.4-zip     unzip     php7.4-gd     default-jre     php7.4-mysql     php7.4-sqlite     php7.4-curl     php7.4-xml     php7.4-mbstring     php7.4-redis     libreoffice
+ ---> Using cache
+ ---> fed655dad9db
+Step 8/33 : RUN apt-get update && apt-get install -y     apache2     libapache2-mod-php
+ ---> Using cache
+ ---> 8fe623f364cf
+Step 9/33 : RUN a2enmod rewrite
+ ---> Using cache
+ ---> e4017409f4c2
+Step 10/33 : ADD ./composer/composer-install.sh /app/docker/composer-install.sh
+ ---> Using cache
+ ---> a6ea61883021
+Step 11/33 : RUN sh /app/docker/composer-install.sh
+ ---> Using cache
+ ---> 76cc3d2f1e37
+Step 12/33 : RUN chmod a+x /usr/local/bin/composer
+ ---> Using cache
+ ---> 3aa8634e3a52
+Step 13/33 : RUN wget https://get.symfony.com/cli/installer -O - | bash
+ ---> Using cache
+ ---> 36c5495da46f
+Step 14/33 : RUN mv -v /root/.symfony/bin/symfony /usr/local/bin/symfony
+ ---> Using cache
+ ---> bdcd400aaa33
+Step 15/33 : RUN chmod +x /usr/local/bin/symfony
+ ---> Using cache
+ ---> 9a41568f8149
+Step 16/33 : RUN apt update && apt install curl
+ ---> Using cache
+ ---> ca60cd9050f6
+Step 17/33 : RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+ ---> Using cache
+ ---> 8af2de4b69c4
+Step 18/33 : RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+ ---> Using cache
+ ---> 917a334873b0
+Step 19/33 : RUN apt update && apt install -y yarn
+ ---> Using cache
+ ---> 89d58079a166
+Step 20/33 : RUN sed -e 's/max_execution_time = 30/max_execution_time = 300/' -i /etc/php/7.4/apache2/php.ini
+ ---> Using cache
+ ---> fbd1da1ffa9a
+Step 21/33 : RUN sed -e 's/upload_max_filesize = 2M/upload_max_filesize = 300M/' -i /etc/php/7.4/apache2/php.ini
+ ---> Using cache
+ ---> fd8eac1016c9
+Step 22/33 : RUN sed -e 's/post_max_size = 8M/post_max_size = 300M/' -i /etc/php/7.4/apache2/php.ini
+ ---> Using cache
+ ---> 61f7200a66f9
+Step 23/33 : RUN echo "display_errors = on\n" >> /etc/php/7.4/apache2/php.ini
+ ---> Running in a92b8de0e272
+Removing intermediate container a92b8de0e272
+ ---> 1f3146d9afb7
+Step 24/33 : RUN echo "display_startup_errors = on\n" >> /etc/php/7.4/apache2/php.ini
+ ---> Running in dfaed9a55b0a
+Removing intermediate container dfaed9a55b0a
+ ---> b108bbae9779
+Step 25/33 : RUN echo "error_log = /app/logs/php.log\n" >> /etc/php/7.4/apache2/php.ini
+ ---> Running in a8350aab2cb9
+Removing intermediate container a8350aab2cb9
+ ---> 1dcfada0fa0b
+Step 26/33 : RUN echo 'extension = imagick.so' /etc/php/7.4/apache2/php.ini
+ ---> Running in 470381a2fe33
+extension = imagick.so /etc/php/7.4/apache2/php.ini
+Removing intermediate container 470381a2fe33
+ ---> efc4c7d50289
+Step 27/33 : RUN echo "PS1='\[\e[36;43m\]DOCKER PHP73\[\e[m\] ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> /root/.bashrc
+ ---> Running in 41ec6a9638c6
+Removing intermediate container 41ec6a9638c6
+ ---> 94253d243523
+Step 28/33 : RUN echo "alias ll='ls -alF'" >> /root/.bashrc
+ ---> Running in 85fbec1cfc91
+Removing intermediate container 85fbec1cfc91
+ ---> 579a6a69144f
+Step 29/33 : RUN echo "alias la='ls -A'" >> /root/.bashrc
+ ---> Running in 7a25a9372638
+Removing intermediate container 7a25a9372638
+ ---> a2413cae514f
+Step 30/33 : RUN echo "alias l='ls -CF'" >> /root/.bashrc
+ ---> Running in d3276aed05f9
+Removing intermediate container d3276aed05f9
+ ---> 9264bbcc7136
+Step 31/33 : EXPOSE 80
+ ---> Running in fb306d709a8e
+Removing intermediate container fb306d709a8e
+ ---> abab0f060f93
+Step 32/33 : EXPOSE 443
+ ---> Running in 6ead0c630e08
+Removing intermediate container 6ead0c630e08
+ ---> 1db11b45b3d1
+Step 33/33 : CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+ ---> Running in 18ce432d2896
+Removing intermediate container 18ce432d2896
+ ---> 11c6f8b5e673
+Successfully built 11c6f8b5e673
+Successfully tagged docker_php:latest
+Creating docker_mysql_1 ... done
+Creating docker_php_1   ... done
+Attaching to docker_mysql_1, docker_php_1
+mysql_1  | 2021-11-30T09:59:42.586170Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+mysql_1  | 2021-11-30T09:59:42.586322Z 0 [Warning] 'NO_AUTO_CREATE_USER' sql mode was not set.
+mysql_1  | 2021-11-30T09:59:42.588975Z 0 [Note] mysqld (mysqld 5.7.19) starting as process 1 ...
+mysql_1  | 2021-11-30T09:59:42.596134Z 0 [Note] InnoDB: PUNCH HOLE support available
+mysql_1  | 2021-11-30T09:59:42.596209Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+mysql_1  | 2021-11-30T09:59:42.596216Z 0 [Note] InnoDB: Uses event mutexes
+mysql_1  | 2021-11-30T09:59:42.596221Z 0 [Note] InnoDB: GCC builtin __atomic_thread_fence() is used for memory barrier
+mysql_1  | 2021-11-30T09:59:42.596226Z 0 [Note] InnoDB: Compressed tables use zlib 1.2.3
+mysql_1  | 2021-11-30T09:59:42.596231Z 0 [Note] InnoDB: Using Linux native AIO
+mysql_1  | 2021-11-30T09:59:42.596763Z 0 [Note] InnoDB: Number of pools: 1
+mysql_1  | 2021-11-30T09:59:42.596895Z 0 [Note] InnoDB: Using CPU crc32 instructions
+mysql_1  | 2021-11-30T09:59:42.599737Z 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+mysql_1  | 2021-11-30T09:59:42.616855Z 0 [Note] InnoDB: Completed initialization of buffer pool
+mysql_1  | 2021-11-30T09:59:42.620593Z 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+mysql_1  | 2021-11-30T09:59:42.645317Z 0 [Note] InnoDB: Highest supported file format is Barracuda.
+mysql_1  | 2021-11-30T09:59:42.647561Z 0 [Note] InnoDB: Log scan progressed past the checkpoint lsn 14579949
+mysql_1  | 2021-11-30T09:59:42.647603Z 0 [Note] InnoDB: Doing recovery: scanned up to log sequence number 14579958
+mysql_1  | 2021-11-30T09:59:42.647615Z 0 [Note] InnoDB: Database was not shutdown normally!
+mysql_1  | 2021-11-30T09:59:42.647623Z 0 [Note] InnoDB: Starting crash recovery.
+mysql_1  | 2021-11-30T09:59:42.787983Z 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+mysql_1  | 2021-11-30T09:59:42.788044Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+mysql_1  | 2021-11-30T09:59:42.788196Z 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+mysql_1  | 2021-11-30T09:59:42.831635Z 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+mysql_1  | 2021-11-30T09:59:42.832951Z 0 [Note] InnoDB: 96 redo rollback segment(s) found. 96 redo rollback segment(s) are active.
+mysql_1  | 2021-11-30T09:59:42.832989Z 0 [Note] InnoDB: 32 non-redo rollback segment(s) are active.
+mysql_1  | 2021-11-30T09:59:42.833840Z 0 [Note] InnoDB: 5.7.19 started; log sequence number 14579958
+mysql_1  | 2021-11-30T09:59:42.834134Z 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+mysql_1  | 2021-11-30T09:59:42.834606Z 0 [Note] Plugin 'FEDERATED' is disabled.
+mysql_1  | 2021-11-30T09:59:42.838580Z 0 [Note] InnoDB: Buffer pool(s) load completed at 211130  9:59:42
+mysql_1  | 2021-11-30T09:59:42.844332Z 0 [Note] Found ca.pem, server-cert.pem and server-key.pem in data directory. Trying to enable SSL support using them.
+mysql_1  | 2021-11-30T09:59:42.845273Z 0 [Warning] CA certificate ca.pem is self signed.
+mysql_1  | 2021-11-30T09:59:42.848010Z 0 [Note] Server hostname (bind-address): '*'; port: 3306
+mysql_1  | 2021-11-30T09:59:42.848091Z 0 [Note] IPv6 is available.
+mysql_1  | 2021-11-30T09:59:42.848104Z 0 [Note]   - '::' resolves to '::';
+mysql_1  | 2021-11-30T09:59:42.848153Z 0 [Note] Server socket created on IP: '::'.
+mysql_1  | 2021-11-30T09:59:42.854216Z 0 [Warning] 'user' entry 'root@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.854318Z 0 [Warning] 'user' entry 'mysql.sys@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.854337Z 0 [Warning] 'user' entry 'epsi@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.854386Z 0 [Warning] 'db' entry 'performance_schema mysql.session@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.854403Z 0 [Warning] 'db' entry 'sys mysql.sys@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.854409Z 0 [Warning] 'db' entry 'epsi epsi@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.854435Z 0 [Warning] 'proxies_priv' entry '@ root@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.860794Z 0 [Warning] 'tables_priv' entry 'user mysql.session@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.860863Z 0 [Warning] 'tables_priv' entry 'sys_config mysql.sys@localhost' ignored in --skip-name-resolve mode.
+mysql_1  | 2021-11-30T09:59:42.877337Z 0 [Note] Event Scheduler: Loaded 0 events
+mysql_1  | 2021-11-30T09:59:42.877866Z 0 [Note] mysqld: ready for connections.
+mysql_1  | Version: '5.7.19'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+mysql_1  | 2021-11-30T09:59:42.878042Z 0 [Note] Executing 'SELECT * FROM INFORMATION_SCHEMA.TABLES;' to get a list of tables using the deprecated partition engine. You may use the startup option '--disable-partition-engine-check' to skip this check. 
+mysql_1  | 2021-11-30T09:59:42.878057Z 0 [Note] Beginning of list of non-natively partitioned tables
+mysql_1  | 2021-11-30T09:59:42.898061Z 0 [Note] End of list of non-natively partitioned tables
+php_1    | AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.19.0.3. Set the 'ServerName' directive globally to suppress this message
+
